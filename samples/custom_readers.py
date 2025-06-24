@@ -37,7 +37,7 @@ class StringQReader(QReader):
 
     @parse(QSYMBOL)
     def _read_symbol(self, qtype = QSYMBOL):
-        return numpy.string_(self._buffer.get_symbol()).decode(self._encoding)
+        return numpy.bytes_(self._buffer.get_symbol()).decode(self._encoding)
 
 
 
@@ -55,7 +55,7 @@ class ReverseStringQReader(QReader):
 
     @parse(QSYMBOL)
     def _read_symbol(self, qtype = QSYMBOL):
-        return numpy.string_(self._buffer.get_symbol()).decode(self._encoding)[::-1]
+        return numpy.bytes_(self._buffer.get_symbol()).decode(self._encoding)[::-1]
 
 
 

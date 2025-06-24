@@ -170,7 +170,7 @@ PY_TYPE = {
     QFLOAT:         numpy.float32,
     QDOUBLE:        numpy.float64,
     QCHAR:          numpy.byte,
-    QSYMBOL:        numpy.string_,
+    QSYMBOL:        numpy.bytes_,
     QMONTH:         numpy.int32,
     QDATE:          numpy.int32,
     QDATETIME:      numpy.float64,
@@ -199,7 +199,7 @@ Q_TYPE = {
     numpy.float64    : QDOUBLE,
     str              : QSTRING,
     bytes            : QSTRING,
-    numpy.string_    : QSYMBOL,
+    numpy.bytes_    : QSYMBOL,
     uuid.UUID        : QGUID,
     }
 
@@ -261,7 +261,7 @@ _QNULL8 = numpy.int64(-2**63)
 _QNAN32 = numpy.frombuffer(b'\x00\x00\xc0\x7f', dtype=numpy.float32)[0]
 _QNAN64 = numpy.frombuffer(b'\x00\x00\x00\x00\x00\x00\xf8\x7f', dtype=numpy.float64)[0]
 _QNULL_BOOL = numpy.bool_(False)
-_QNULL_SYM = numpy.string_('')
+_QNULL_SYM = numpy.bytes_('')
 _QNULL_GUID = uuid.UUID('00000000-0000-0000-0000-000000000000')
 
 

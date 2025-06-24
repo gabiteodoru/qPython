@@ -28,16 +28,16 @@ from qpython.qtemporal import _MILLIS_PER_DAY
 
 def test_is_null():
     assert is_null(qnull(QSYMBOL), QSYMBOL)
-    assert is_null(numpy.string_(''), QSYMBOL)
+    assert is_null(numpy.bytes_(''), QSYMBOL)
     assert is_null(b'', QSYMBOL)
     assert not is_null(b' ', QSYMBOL)
-    assert not is_null(numpy.string_(' '), QSYMBOL)
+    assert not is_null(numpy.bytes_(' '), QSYMBOL)
 
     assert is_null(qnull(QSTRING), QSTRING)
     assert is_null(b' ', QSTRING)
     assert not is_null(b'', QSTRING)
-    assert not is_null(numpy.string_(''), QSTRING)
-    assert is_null(numpy.string_(' '), QSTRING)
+    assert not is_null(numpy.bytes_(''), QSTRING)
+    assert is_null(numpy.bytes_(' '), QSTRING)
 
     assert is_null(qnull(QBOOL), QBOOL)
     assert is_null(numpy.bool_(False), QBOOL)

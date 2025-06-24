@@ -217,7 +217,7 @@ class QDictionary(object):
        
     >>> # q: (1;2h;3.234;"4")!(`one;2 3;"456";(7;8 9))
     >>> print(QDictionary([numpy.int64(1), numpy.int16(2), numpy.float64(3.234), '4'], 
-    ...                    [numpy.string_('one'), qlist(numpy.array([2, 3]), qtype=QLONG_LIST), '456', [numpy.int64(7), qlist(numpy.array([8, 9]), qtype=QLONG_LIST)]]))
+    ...                    [numpy.bytes_('one'), qlist(numpy.array([2, 3]), qtype=QLONG_LIST), '456', [numpy.int64(7), qlist(numpy.array([8, 9]), qtype=QLONG_LIST)]]))
     [1, 2, 3.234, '4']!['one', QList([2, 3], dtype=int64), '456', [7, QList([8, 9], dtype=int64)]]
     
     :Parameters:
@@ -378,9 +378,9 @@ def qtable(columns, data, **meta):
         
         if isinstance(data[i], str):
             # convert character list (represented as string) to numpy representation
-            data[i] = numpy.array(list(data[i]), dtype = numpy.string_)
+            data[i] = numpy.array(list(data[i]), dtype = numpy.bytes_)
         if isinstance(data[i], bytes):
-            data[i] = numpy.array(list(data[i].decode()), dtype = numpy.string_)
+            data[i] = numpy.array(list(data[i].decode()), dtype = numpy.bytes_)
 
         if column_name in meta:
             data[i] = qlist(data[i], qtype = meta[column_name])

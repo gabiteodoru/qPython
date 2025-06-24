@@ -171,8 +171,8 @@ def test_writing():
     test_writing_one(b'"abc"',                                         ('abc',
                                                       numpy.array(list('abc'), dtype='S')))
     test_writing_one(b'"quick brown fox jumps over a lazy dog"',       'quick brown fox jumps over a lazy dog')
-    test_writing_one(b'`abc',                                          numpy.string_('abc'))
-    test_writing_one(b'`quickbrownfoxjumpsoveralazydog',               numpy.string_('quickbrownfoxjumpsoveralazydog'))
+    test_writing_one(b'`abc',                                          numpy.bytes_('abc'))
+    test_writing_one(b'`quickbrownfoxjumpsoveralazydog',               numpy.bytes_('quickbrownfoxjumpsoveralazydog'))
     test_writing_one(b'0Nh',                                           qnull(QSHORT))
     test_writing_one(b'0N',                                            qnull(QLONG))
     test_writing_one(b'0Ni',                                           qnull(QINT))
@@ -220,16 +220,16 @@ def test_writing():
                                                       qlist(numpy.array([3.23, 6.46]), qtype = QDOUBLE_LIST),
                                                       qlist([3.23, 6.46], qtype = QDOUBLE_LIST)))
     test_writing_one(b'3.23 0n',                                       qlist(numpy.array([3.23, qnull(QDOUBLE)], dtype=numpy.float64), qtype=QDOUBLE_LIST))
-    test_writing_one(b'(1;`bcd;"0bc";5.5e)',                           [numpy.int64(1), numpy.string_('bcd'), '0bc', numpy.float32(5.5)])
-    test_writing_one(b'(42;::;`foo)',                                  [numpy.int64(42), None, numpy.string_('foo')])
+    test_writing_one(b'(1;`bcd;"0bc";5.5e)',                           [numpy.int64(1), numpy.bytes_('bcd'), '0bc', numpy.float32(5.5)])
+    test_writing_one(b'(42;::;`foo)',                                  [numpy.int64(42), None, numpy.bytes_('foo')])
     test_writing_one(b'(1;2h;3.234;"4")',                              [numpy.int64(1), numpy.int16(2), numpy.float64(3.234), '4'])
-    test_writing_one(b'(`one;2 3;"456";(7;8 9))',                      [numpy.string_('one'), qlist(numpy.array([2, 3], dtype=numpy.int64), qtype=QLONG_LIST), '456', [numpy.int64(7), qlist(numpy.array([8, 9], dtype=numpy.int64), qtype=QLONG_LIST)]])
+    test_writing_one(b'(`one;2 3;"456";(7;8 9))',                      [numpy.bytes_('one'), qlist(numpy.array([2, 3], dtype=numpy.int64), qtype=QLONG_LIST), '456', [numpy.int64(7), qlist(numpy.array([8, 9], dtype=numpy.int64), qtype=QLONG_LIST)]])
 
-    test_writing_one(b'`jumps`over`a`lazy`dog',                        (numpy.array(['jumps', 'over', 'a', 'lazy', 'dog'], dtype=numpy.string_),
+    test_writing_one(b'`jumps`over`a`lazy`dog',                        (numpy.array(['jumps', 'over', 'a', 'lazy', 'dog'], dtype=numpy.bytes_),
                                                       qlist(numpy.array(['jumps', 'over', 'a', 'lazy', 'dog']), qtype = QSYMBOL_LIST),
                                                       qlist(['jumps', 'over', 'a', 'lazy', 'dog'], qtype = QSYMBOL_LIST)))
-    test_writing_one(b'`the`quick`brown`fox',                          numpy.array([numpy.string_('the'), numpy.string_('quick'), numpy.string_('brown'), numpy.string_('fox')], dtype=object))
-    test_writing_one(b'``quick``fox',                                  qlist(numpy.array([qnull(QSYMBOL), numpy.string_('quick'), qnull(QSYMBOL), numpy.string_('fox')], dtype=object), qtype=QSYMBOL_LIST))
+    test_writing_one(b'`the`quick`brown`fox',                          numpy.array([numpy.bytes_('the'), numpy.bytes_('quick'), numpy.bytes_('brown'), numpy.bytes_('fox')], dtype=object))
+    test_writing_one(b'``quick``fox',                                  qlist(numpy.array([qnull(QSYMBOL), numpy.bytes_('quick'), qnull(QSYMBOL), numpy.bytes_('fox')], dtype=object), qtype=QSYMBOL_LIST))
     test_writing_one(b'``',                                            qlist(numpy.array([qnull(QSYMBOL), qnull(QSYMBOL)], dtype=object), qtype=QSYMBOL_LIST))
     test_writing_one(b'("quick"; "brown"; "fox"; "jumps"; "over"; "a lazy"; "dog")',
                                                      (['quick', 'brown', 'fox', 'jumps', 'over', 'a lazy', 'dog'],
@@ -249,13 +249,13 @@ def test_writing():
                                                                         [qlist(numpy.array([1, 2, 3]), qtype = QLONG_LIST),
                                                                          qlist(numpy.array([4, 5, 6]), qtype = QLONG_LIST)])))
     test_writing_one(b'(`x`y!(`a;2))',                                 QDictionary(qlist(numpy.array(['x', 'y']), qtype = QSYMBOL_LIST),
-                                                                 [numpy.string_('a'), numpy.int64(2)]))
+                                                                 [numpy.bytes_('a'), numpy.int64(2)]))
     test_writing_one(b'(0 1; 2 3)!`first`second',                      QDictionary([qlist(numpy.array([0, 1], dtype=numpy.int64), qtype=QLONG_LIST), qlist(numpy.array([2, 3], dtype=numpy.int64), qtype=QLONG_LIST)],
                                                                   qlist(numpy.array(['first', 'second']), qtype = QSYMBOL_LIST)))
     test_writing_one(b'(1;2h;3.234;"4")!(`one;2 3;"456";(7;8 9))',     QDictionary([numpy.int64(1), numpy.int16(2), numpy.float64(3.234), '4'],
-                                                                 [numpy.string_('one'), qlist(numpy.array([2, 3], dtype=numpy.int64), qtype=QLONG_LIST), '456', [numpy.int64(7), qlist(numpy.array([8, 9], dtype=numpy.int64), qtype=QLONG_LIST)]]))
+                                                                 [numpy.bytes_('one'), qlist(numpy.array([2, 3], dtype=numpy.int64), qtype=QLONG_LIST), '456', [numpy.int64(7), qlist(numpy.array([8, 9], dtype=numpy.int64), qtype=QLONG_LIST)]]))
     test_writing_one(b'`A`B`C!((1;3.234;3);(`x`y!(`a;2));5.5e)',       QDictionary(qlist(numpy.array(['A', 'B', 'C']), qtype = QSYMBOL_LIST),
-                                                                 [[numpy.int64(1), numpy.float64(3.234), numpy.int64(3)], QDictionary(qlist(numpy.array(['x', 'y']), qtype = QSYMBOL_LIST), [numpy.string_('a'), numpy.int64(2)]), numpy.float32(5.5)]))
+                                                                 [[numpy.int64(1), numpy.float64(3.234), numpy.int64(3)], QDictionary(qlist(numpy.array(['x', 'y']), qtype = QSYMBOL_LIST), [numpy.bytes_('a'), numpy.int64(2)]), numpy.float32(5.5)]))
 
     test_writing_one(b'flip `abc`def!(1 2 3; 4 5 6)',                  (qtable(qlist(numpy.array(['abc', 'def']), qtype = QSYMBOL_LIST),
                                                             [qlist(numpy.array([1, 2, 3], dtype=numpy.int64), qtype=QLONG_LIST),
@@ -331,23 +331,23 @@ def test_writing():
                                                                qlist(numpy.array([3, 4]), qtype = QLONG_LIST),
                                                                qlist(numpy.array([5, 6]), qtype = QLONG_LIST)]]))
     test_writing_one(b'1#([] sym:`x`x`x;str:"  a")',                   {'data': qtable(qlist(numpy.array(['sym', 'str']), qtype = QSYMBOL_LIST),
-                                                                     [qlist(numpy.array(['x'], dtype=numpy.string_), qtype = QSYMBOL_LIST),
+                                                                     [qlist(numpy.array(['x'], dtype=numpy.bytes_), qtype = QSYMBOL_LIST),
                                                                       b" "]),
                                                        'single_char_strings': True
                                                        })
     test_writing_one(b'-1#([] sym:`x`x`x;str:"  a")',                  {'data': qtable(qlist(numpy.array(['sym', 'str']), qtype = QSYMBOL_LIST),
-                                                                     [qlist(numpy.array(['x'], dtype=numpy.string_), qtype = QSYMBOL_LIST),
+                                                                     [qlist(numpy.array(['x'], dtype=numpy.bytes_), qtype = QSYMBOL_LIST),
                                                                       b"a"]),
                                                        'single_char_strings': True
                                                        })
     test_writing_one(b'2#([] sym:`x`x`x`x;str:"  aa")',                qtable(qlist(numpy.array(['sym', 'str']), qtype = QSYMBOL_LIST),
-                                                            [qlist(numpy.array(['x', 'x'], dtype=numpy.string_), qtype = QSYMBOL_LIST),
+                                                            [qlist(numpy.array(['x', 'x'], dtype=numpy.bytes_), qtype = QSYMBOL_LIST),
                                                              b"  "]))
     test_writing_one(b'-2#([] sym:`x`x`x`x;str:"  aa")',               qtable(qlist(numpy.array(['sym', 'str']), qtype = QSYMBOL_LIST),
-                                                            [qlist(numpy.array(['x', 'x'], dtype=numpy.string_), qtype = QSYMBOL_LIST),
+                                                            [qlist(numpy.array(['x', 'x'], dtype=numpy.bytes_), qtype = QSYMBOL_LIST),
                                                              b"aa"]))
     test_writing_one(b'([] name:`symbol$(); iq:`int$())',              (qtable(qlist(numpy.array(['name', 'iq']), qtype = QSYMBOL_LIST),
-                                                            [qlist(numpy.array([], dtype=numpy.string_), qtype = QSYMBOL_LIST),
+                                                            [qlist(numpy.array([], dtype=numpy.bytes_), qtype = QSYMBOL_LIST),
                                                              qlist(numpy.array([], dtype=numpy.int32), qtype = QINT_LIST)]),
                                                       qtable(qlist(numpy.array(['name', 'iq']), qtype = QSYMBOL_LIST),
                                                             [qlist(numpy.array([]), qtype = QSYMBOL_LIST),

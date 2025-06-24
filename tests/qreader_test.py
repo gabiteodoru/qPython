@@ -183,8 +183,8 @@ def test_reading():
     test_reading_one(b'"0"',                                           b'0')
     test_reading_one(b'"abc"',                                         b'abc')
     test_reading_one(b'"quick brown fox jumps over a lazy dog"',       b'quick brown fox jumps over a lazy dog')
-    test_reading_one(b'`abc',                                          numpy.string_('abc'))
-    test_reading_one(b'`quickbrownfoxjumpsoveralazydog',               numpy.string_('quickbrownfoxjumpsoveralazydog'))
+    test_reading_one(b'`abc',                                          numpy.bytes_('abc'))
+    test_reading_one(b'`quickbrownfoxjumpsoveralazydog',               numpy.bytes_('quickbrownfoxjumpsoveralazydog'))
     test_reading_one(b'0Nh',                                           qnull(QSHORT))
     test_reading_one(b'0N',                                            qnull(QLONG))
     test_reading_one(b'0Ni',                                           qnull(QINT))
@@ -209,10 +209,10 @@ def test_reading():
     test_reading_one(b'(5.5e; 0Ne)',                                   qlist(numpy.array([5.5, qnull(QFLOAT)], dtype=numpy.float32), qtype=QFLOAT_LIST))
     test_reading_one(b'3.23 6.46',                                     qlist(numpy.array([3.23, 6.46], dtype=numpy.float64), qtype=QDOUBLE_LIST))
     test_reading_one(b'3.23 0n',                                       qlist(numpy.array([3.23, qnull(QDOUBLE)], dtype=numpy.float64), qtype=QDOUBLE_LIST))
-    test_reading_one(b'(1;`bcd;"0bc";5.5e)',                           [numpy.int64(1), numpy.string_('bcd'), b'0bc', numpy.float32(5.5)])
-    test_reading_one(b'(42;::;`foo)',                                  [numpy.int64(42), None, numpy.string_('foo')])
-    test_reading_one(b'`the`quick`brown`fox',                          qlist(numpy.array([numpy.string_('the'), numpy.string_('quick'), numpy.string_('brown'), numpy.string_('fox')], dtype=object), qtype=QSYMBOL_LIST))
-    test_reading_one(b'``quick``fox',                                  qlist(numpy.array([qnull(QSYMBOL), numpy.string_('quick'), qnull(QSYMBOL), numpy.string_('fox')], dtype=object), qtype=QSYMBOL_LIST))
+    test_reading_one(b'(1;`bcd;"0bc";5.5e)',                           [numpy.int64(1), numpy.bytes_('bcd'), b'0bc', numpy.float32(5.5)])
+    test_reading_one(b'(42;::;`foo)',                                  [numpy.int64(42), None, numpy.bytes_('foo')])
+    test_reading_one(b'`the`quick`brown`fox',                          qlist(numpy.array([numpy.bytes_('the'), numpy.bytes_('quick'), numpy.bytes_('brown'), numpy.bytes_('fox')], dtype=object), qtype=QSYMBOL_LIST))
+    test_reading_one(b'``quick``fox',                                  qlist(numpy.array([qnull(QSYMBOL), numpy.bytes_('quick'), qnull(QSYMBOL), numpy.bytes_('fox')], dtype=object), qtype=QSYMBOL_LIST))
     test_reading_one(b'``',                                            qlist(numpy.array([qnull(QSYMBOL), qnull(QSYMBOL)], dtype=object), qtype=QSYMBOL_LIST))
     test_reading_one(b'("quick"; "brown"; "fox"; "jumps"; "over"; "a lazy"; "dog")',
                                                       [b'quick', b'brown', b'fox', b'jumps', b'over', b'a lazy', b'dog'])
@@ -242,7 +242,7 @@ def test_reading():
     test_reading_one(b'(0 1; 2 3)!`first`second',                      QDictionary([qlist(numpy.array([0, 1], dtype=numpy.int64), qtype=QLONG_LIST), qlist(numpy.array([2, 3], dtype=numpy.int64), qtype=QLONG_LIST)],
                                                                    qlist(numpy.array(['first', 'second']), qtype = QSYMBOL_LIST)))
     test_reading_one(b'(1;2h;3.234;"4")!(`one;2 3;"456";(7;8 9))',     QDictionary([numpy.int64(1), numpy.int16(2), numpy.float64(3.234), b'4'],
-                                                                  [numpy.string_('one'), qlist(numpy.array([2, 3], dtype=numpy.int64), qtype=QLONG_LIST), b'456', [numpy.int64(7), qlist(numpy.array([8, 9], dtype=numpy.int64), qtype=QLONG_LIST)]]))
+                                                                  [numpy.bytes_('one'), qlist(numpy.array([2, 3], dtype=numpy.int64), qtype=QLONG_LIST), b'456', [numpy.int64(7), qlist(numpy.array([8, 9], dtype=numpy.int64), qtype=QLONG_LIST)]]))
     test_reading_one(b'`A`B`C!((1;3.234;3);(`x`y!(`a;2));5.5e)',       QDictionary(qlist(numpy.array(['A', 'B', 'C']), qtype = QSYMBOL_LIST),
                                                                   [[numpy.int64(1), numpy.float64(3.234), numpy.int64(3)], QDictionary(qlist(numpy.array(['x', 'y']), qtype = QSYMBOL_LIST), [b'a', numpy.int64(2)]), numpy.float32(5.5)]))
 
@@ -279,19 +279,19 @@ def test_reading():
                                                                qlist(numpy.array([3, 4]), qtype = QLONG_LIST),
                                                                qlist(numpy.array([5, 6]), qtype = QLONG_LIST)]]))
     test_reading_one(b'1#([] sym:`x`x`x;str:"  a")',                  qtable(qlist(numpy.array(['sym', 'str']), qtype = QSYMBOL_LIST),
-                                                            [qlist(numpy.array(['x'], dtype=numpy.string_), qtype = QSYMBOL_LIST),
+                                                            [qlist(numpy.array(['x'], dtype=numpy.bytes_), qtype = QSYMBOL_LIST),
                                                              b" "]))
     test_reading_one(b'-1#([] sym:`x`x`x;str:"  a")',                 qtable(qlist(numpy.array(['sym', 'str']), qtype = QSYMBOL_LIST),
-                                                            [qlist(numpy.array(['x'], dtype=numpy.string_), qtype = QSYMBOL_LIST),
+                                                            [qlist(numpy.array(['x'], dtype=numpy.bytes_), qtype = QSYMBOL_LIST),
                                                              b"a"]))
     test_reading_one(b'2#([] sym:`x`x`x`x;str:"  aa")',               qtable(qlist(numpy.array(['sym', 'str']), qtype = QSYMBOL_LIST),
-                                                            [qlist(numpy.array(['x', 'x'], dtype=numpy.string_), qtype = QSYMBOL_LIST),
+                                                            [qlist(numpy.array(['x', 'x'], dtype=numpy.bytes_), qtype = QSYMBOL_LIST),
                                                              b"  "]))
     test_reading_one(b'-2#([] sym:`x`x`x`x;str:"  aa")',              qtable(qlist(numpy.array(['sym', 'str']), qtype = QSYMBOL_LIST),
-                                                            [qlist(numpy.array(['x', 'x'], dtype=numpy.string_), qtype = QSYMBOL_LIST),
+                                                            [qlist(numpy.array(['x', 'x'], dtype=numpy.bytes_), qtype = QSYMBOL_LIST),
                                                              b"aa"]))
     test_reading_one(b'([] name:`symbol$(); iq:`int$())',             qtable(qlist(numpy.array(['name', 'iq']), qtype = QSYMBOL_LIST),
-                                                            [qlist(numpy.array([], dtype=numpy.string_), qtype = QSYMBOL_LIST),
+                                                            [qlist(numpy.array([], dtype=numpy.bytes_), qtype = QSYMBOL_LIST),
                                                              qlist(numpy.array([]), qtype = QINT_LIST)]))
     test_reading_one(b'([] pos:`d1`d2`d3;dates:(2001.01.01;2000.05.01;0Nd))',
                                                       qtable(qlist(numpy.array(['pos', 'dates']), qtype = QSYMBOL_LIST),

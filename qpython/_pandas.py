@@ -171,7 +171,7 @@ class PandasQWriter(QWriter):
         if qtype == QGENERAL_LIST:
             self._write_generic_list(data.values)
         elif qtype == QCHAR:
-            self._write_string(data.replace(numpy.nan, ' ').values.astype(numpy.string_).tobytes())
+            self._write_string(data.replace(numpy.nan, ' ').values.astype(numpy.bytes_).tobytes())
         elif data.dtype.type not in (numpy.datetime64, numpy.timedelta64):
             data = data.fillna(QNULLMAP[-abs(qtype)][1])
             data = data.values

@@ -1,5 +1,20 @@
-qPython
-=======
+qPython (NumPy 2.0 Compatible Fork)
+====================================
+
+**This is a fork of** `finos/qPython <https://github.com/finos/qPython>`_ **with NumPy 2.0 compatibility fixes applied.**
+
+**Changes made:**
+
+- **Date:** 2025-01-24
+- **Fix:** Replaced all ``numpy.string_`` with ``numpy.bytes_`` for NumPy 2.0 compatibility
+- **Original qPython version:** Latest from finos/qPython as of fork date
+
+For the original project and full documentation, see: https://github.com/finos/qPython
+
+----
+
+qPython (Original README below)
+===============================
 
 qPython is a Python library providing support for interprocess communication between Python and kdb+ processes, it offers:
 
