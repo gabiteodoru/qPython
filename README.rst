@@ -6,7 +6,7 @@ qPython (NumPy 2.0 Compatible Fork)
 **Changes made:**
 
 - **Date:** 2025-01-24
-- **Fix:** Replaced all ``numpy.string_`` with ``numpy.bytes_`` for NumPy 2.0 compatibility
+- **Fix:** Replaced all ``numpy.string_`` with ``numpy.bytes_`` for NumPy 2.0 compatibility, also ``NaN`` with ``nan``, etc
 - **Original qPython version:** Latest from finos/qPython as of fork date
 
 For the original project and full documentation, see: https://github.com/finos/qPython

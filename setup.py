@@ -44,14 +44,14 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 
-setup(name = 'qPython3',
+setup(name = 'gabiteodoru-qpython',
       version = __version__,
       description = 'kdb+ interfacing library for Python',
       long_description=read('README.rst'),
 
-      author = 'finos',
-      author_email = 'data-tech-kdb@finos.org',
-      url = 'https://github.com/finos/qPython',
+      author = 'Gabi Teodoru (fork of FINOS qPython)',
+      author_email = 'gabiteodoru@gmail.com',
+      url = 'https://github.com/gabiteodoru/qPython',
       license = 'Apache License Version 2.0',
 
       ext_modules = ext_modules,
