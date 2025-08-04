@@ -21,9 +21,10 @@ if sys.version > '3':
     unicode = str
 
 from qpython import MetaData, CONVERSION_OPTIONS
-from qpython.qtype import *  # @UnusedWildImport
+from qpython.qtype import * 
 from qpython.qcollection import qlist, QDictionary, qtable, QTable, QKeyedTable
 from qpython.qtemporal import qtemporal, from_raw_qtemporal, array_from_raw_qtemporal
+
 
 try:
     from qpython.fastutils import uncompress
@@ -243,17 +244,18 @@ class QReader(object):
     def _read_string(self, qtype = QSTRING):
         self._buffer.skip()  # ignore attributes
         length = self._buffer.get_int()
-        return self._buffer.raw(length) if length > 0 else b''
+        raw_bytes = self._buffer.raw(length) if length > 0 else b''
+        return String(raw_bytes)
 
 
     @parse(QSYMBOL)
     def _read_symbol(self, qtype = QSYMBOL):
-        return numpy.bytes_(self._buffer.get_symbol())
+        return self._buffer.get_symbol().decode('utf-8')
 
 
     @parse(QCHAR)
     def _read_char(self, qtype = QCHAR):
-        return chr(self._read_atom(QCHAR)).encode(self._encoding)
+        return Char(chr(self._read_atom(QCHAR)).encode(self._encoding))
 
 
     @parse(QGUID)

@@ -80,13 +80,29 @@ class PandasQReader(QReader):
             for i in range(len(columns)):
                 column_name = columns[i] if isinstance(columns[i], str) else columns[i].decode("utf-8")
                 if isinstance(data[i], str):
-                    # convert character list (represented as string) to numpy representation
-                    meta[column_name] = QSTRING
-                    odict[column_name] = pandas.Series(list(data[i]), dtype = numpy.str).replace(b' ', numpy.nan)
+                    if len(data[i]) == 1:
+                        # Single character - treat as QCHAR, don't convert to list
+                        meta[column_name] = QCHAR
+                        odict[column_name] = pandas.Series([data[i]], dtype = str)
+                    else:
+                        # convert character list (represented as string) to numpy representation
+                        meta[column_name] = QSTRING
+                        char_list = [Char(c) for c in data[i]]
+                        odict[column_name] = pandas.Series(char_list).replace(' ', numpy.nan)
                 elif isinstance(data[i], bytes):
                     # convert character list (represented as string) to numpy representation
                     meta[column_name] = QSTRING
-                    odict[column_name] = pandas.Series(list(data[i].decode()), dtype = str).replace(b' ', numpy.nan)
+                    odict[column_name] = pandas.Series(list(data[i].decode()), dtype = str).replace(' ', numpy.nan)
+                elif hasattr(data[i], 'meta') and data[i].meta.qtype == QSYMBOL_LIST:
+                    # Handle symbol lists - decode bytes to plain strings
+                    meta[column_name] = QSYMBOL
+                    decoded_symbols = []
+                    for symbol in data[i]:
+                        if hasattr(symbol, 'decode'):
+                            decoded_symbols.append(symbol.decode('utf-8'))
+                        else:
+                            decoded_symbols.append(str(symbol))
+                    odict[column_name] = pandas.Series(decoded_symbols)
                 elif isinstance(data[i], (list, tuple)):
                     meta[column_name] = QGENERAL_LIST
                     tarray = numpy.ndarray(shape = len(data[i]), dtype = numpy.dtype('O'))

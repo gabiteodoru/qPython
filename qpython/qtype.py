@@ -183,6 +183,38 @@ PY_TYPE = {
     QSTRING_LIST:   numpy.object_,
     }
 
+class Char(str):
+    """Wrapper for q char type to preserve type information"""
+    
+    def __new__(cls, value):
+        if isinstance(value, bytes):
+            decoded = value.decode('utf-8')
+        else:
+            decoded = str(value)
+        return str.__new__(cls, decoded)
+    
+    def __str__(self):
+        return f"Char('{super().__str__()}')"
+    
+    def __repr__(self):
+        return f"Char('{super().__str__()}')"
+
+
+class String(str):
+    """Wrapper for q string type to preserve type information"""
+    
+    def __new__(cls, value):
+        if isinstance(value, bytes):
+            decoded = value.decode('utf-8')
+        else:
+            decoded = str(value)
+        return str.__new__(cls, decoded)
+    
+    def __str__(self):
+        return f'String("{super().__str__()}")'
+    
+    def __repr__(self):
+        return f'String("{super().__str__()}")'
 
 # mapping of Python types to corresponding q atoms
 Q_TYPE = {
@@ -197,12 +229,11 @@ Q_TYPE = {
     numpy.float32    : QFLOAT,
     float            : QDOUBLE,
     numpy.float64    : QDOUBLE,
-    str              : QSTRING,
-    bytes            : QSTRING,
-    numpy.bytes_    : QSYMBOL,
+    String           : QSTRING,
+    Char             : QCHAR,
+    str              : QSYMBOL,
     uuid.UUID        : QGUID,
     }
-
 
 # mapping of numpy datetime64/timedelta64 to q temporal types
 TEMPORAL_PY_TYPE = {
